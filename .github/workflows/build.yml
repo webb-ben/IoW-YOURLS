@@ -23,12 +23,13 @@ jobs:
       - name: Populate Yourls table from namespaces
         run: |
           docker build -t build_yourls_uploader ./build/
-          docker run --rm --network=pidsgeoconnexus_yourls_host -v yourls/sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
+          docker run --rm --network=pidsgeoconnexus_yourls_host --name build_yourls -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
       - name: Dump SQL backup from database
         run: |
           export 
           docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword yourls | gzip > /yourls.sql.gz"
           docker cp pidsgeoconnexus_mysql_1:/yourls.sql.gz ./mysql/yourls.sql.gz
+          docker cp build_yourls:/sitemap ./yourls/sitemap
       - name: Build and push geoconnex-mysql
         id: docker_build_mysql
         uses: docker/build-push-action@v2
@@ -52,4 +53,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: sitemap
-          path: yourls/sitemap
+          path: /sitemap
