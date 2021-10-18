@@ -19,18 +19,16 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build MySQL for Yourls
         run: |
-          docker build -t build_mysql -f ./mysql/Dockerfile-build .
-          docker network create --driver=bridge pids_geoconnex_us
-          docker run --rm -d --network=pids_geoconnex_us --name pids_geoconnex_us_mysql -e "MYSQL_ROOT_PASSWORD=arootpassword" build_mysql
+          docker-compose up -d --build  
       - name: Populate Yourls table from namespaces
         run: |
           docker build -t build_yourls_uploader ./build/
-          docker run --rm --network=pids_geoconnex_us -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
+          docker run --rm --network=pidsgeoconnexus_yourls_host -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
       - name: Dump SQL backup from database
         run: |
           export 
-          docker exec pids_geoconnex_us_mysql sh -c "mysqldump -u root --password=arootpassword yourls | gzip > /yourls.sql.gz"
-          docker cp pids_geoconnex_us_mysql:/yourls.sql.gz ./mysql/yourls.sql.gz
+          docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword yourls | gzip > /yourls.sql.gz"
+          docker cp pidsgeoconnexus_mysql_1:/yourls.sql.gz ./mysql/yourls.sql.gz
       - name: Build and push geoconnex-mysql
         id: docker_build_mysql
         uses: docker/build-push-action@v2

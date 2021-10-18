@@ -43,13 +43,13 @@ services:
     #     networks: 
     #         - yourls_host
     
-    adminer:
-        image: adminer
-        restart: always
-        networks:
-            - yourls_host
-        ports:
-            - 6080:8080
+    # adminer:
+    #     image: adminer
+    #     restart: always
+    #     networks:
+    #         - yourls_host
+    #     ports:
+    #         - 6080:8080
 
 networks:
     yourls_host:
