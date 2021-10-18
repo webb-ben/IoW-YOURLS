@@ -269,7 +269,8 @@ class yourls(Yourls):
                 continue
 
             tree_ = ET.parse(f)
-            name_ = f"/sitemap/{f.split('/').pop()}"
+            path_ = '/'.join(f.split('/')[-2:])
+            name_ = f"/sitemap/{path_}"
             tree_.write(name_)
             url_ = url_join(URI_STEM, name_)
             t = SITEMAP_FOREACH.format(url_, datetime.now())
