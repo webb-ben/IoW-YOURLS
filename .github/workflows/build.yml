@@ -20,7 +20,7 @@ jobs:
       - name: Build MySQL for Yourls
         run: |
           docker build -t build_mysql -f ./mysql/Dockerfile-build .
-          docker run --rm --network=pids_geoconnex_us --name pids_geoconnex_us_mysql -e "MYSQL_ROOT_PASSWORD=arootpassword"" build_mysql
+          docker run --rm --network=pids_geoconnex_us --name pids_geoconnex_us_mysql -e "MYSQL_ROOT_PASSWORD=arootpassword" build_mysql
       - name: Populate Yourls table from namespaces
         run: |
           docker build -t build_yourls_uploader ./build/
