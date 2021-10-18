@@ -23,7 +23,7 @@ jobs:
       - name: Populate Yourls table from namespaces
         run: |
           docker build -t build_yourls_uploader ./build/
-          docker run --rm --network=pidsgeoconnexus_yourls_host -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
+          docker run --rm --network=pidsgeoconnexus_yourls_host -v ./yourls/sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
       - name: Dump SQL backup from database
         run: |
           export 
@@ -52,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: sitemap
-          path: /sitemap
+          path: ./yourls/sitemap
