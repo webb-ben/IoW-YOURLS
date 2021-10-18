@@ -72,7 +72,7 @@ class yourls(Yourls):
 
         if self.__to_db:
             mydb = mysql.connector.connect(
-                host=os.environ.get('YOURLS_HOST', 'mysql'),
+                host=os.environ.get('YOURLS_HOST', 'pids_geoconnex_us_mysql'),
                 user=os.environ.get('YOURLS_USER', 'root'),
                 password=os.environ.get('YOURLS_DB_PASSWORD', 'arootpassword'),
                 database="yourls"
