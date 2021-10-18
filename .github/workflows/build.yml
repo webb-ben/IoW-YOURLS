@@ -31,7 +31,6 @@ jobs:
           docker cp pidsgeoconnexus_mysql_1:/yourls.sql.gz /yourls.sql.gz
           cp /yourls.sql.gz ./mysql/yourls.sql.gz
           cp -R /sitemap ./yourls/sitemap
-
       - name: Build and push geoconnex-mysql
         id: docker_build_mysql
         uses: docker/build-push-action@v2
