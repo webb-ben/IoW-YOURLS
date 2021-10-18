@@ -4,7 +4,7 @@ ADD https://github.com/internetofwater/geoconnex.us/archive/refs/heads/master.zi
 
 RUN apt-get update \
     && apt-get install unzip \
-    && unzip ./master.zip
+    && unzip -qq ./master.zip
 
 FROM python
 
