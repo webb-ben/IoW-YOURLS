@@ -35,14 +35,14 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: webbben/pids-geoconnnex-mysql:latest
+          tags: webbben/pids-geoconnex-mysql:latest
           context: mysql
       - name: Build and push geoconnex-yourls
         id: docker_build_yourls
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: webbben/pids-geoconnnex-yourls:latest
+          tags: webbben/pids-geoconnex-yourls:latest
           context: yourls
       - name: Save SQL Artifact
         uses: actions/upload-artifact@v2
