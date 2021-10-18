@@ -19,11 +19,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build MySQL for Yourls
         run: |
-          docker build -t build_mysql -f Dockerfile-build ./mysql/
+          docker build -t build_mysql -f ./mysql/Dockerfile-build ./mysql/
           docker run --rm --network=pids_geoconnex_us --name pids_geoconnex_us_mysql -e "MYSQL_ROOT_PASSWORD=arootpassword"" build_mysql
       - name: Populate Yourls table from namespaces
         run: |
-          docker build -t -f Dockerfile-build build_yourls_uploader ./build/
+          docker build -t build_yourls_uploader -f ./mysql/Dockerfile-build ./build/
           docker run --rm --network=pids_geoconnex_us -v /sitemap:/sitemap -e "YOURLS_PORT=${YOURLS_PORT}" -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
       - name: Dump SQL backup from database
         run: |
