@@ -1,3 +1,3 @@
 FROM mysql:5.7
 
-COPY . /docker-entrypoint-initdb.d/
+COPY ./yourls.sql.gz /docker-entrypoint-initdb.d/yourls.sql.gz
