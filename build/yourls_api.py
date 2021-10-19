@@ -34,6 +34,7 @@ import os
 import csv
 import json
 import xml.etree.ElementTree as ET
+from shutil import copyfile
 
 SITEMAP = '/sitemap/'
 URI_STEM = os.environ.get('URI_STEM', 'https://geoconnex.us')
@@ -254,10 +255,6 @@ class yourls(Yourls):
         tree.write(f'{filename}.xml')
 
     def make_sitemap(self, files):
-        # Setup file system:
-        if not os.path.isdir('/sitemap/'):
-            os.makedirs('/sitemap/')
-
         tree = ET.parse('./sitemap-schema.xml')
         sitemap = tree.getroot()
         for f in files:
@@ -268,13 +265,20 @@ class yourls(Yourls):
             except ValueError:
                 continue
 
-            tree_ = ET.parse(f)
-            path_ = '/'.join(('sitemap', *f.split('/')[-2:]))
-            tree_.write('/{path}')
+            # Check buildpath
+            path_ = f"/{'/'.join(('sitemap', *f.split('/')[-2:]))}"
+            if not os.path.exists(path_):
+                os.makedirs(path_)
+
+            # Copy to /sitemaps
+            copyfile(f, path_)
+
+            # create to link /sitemap/_sitemap.xml
             url_ = url_join(URI_STEM, path_)
             t = SITEMAP_FOREACH.format(url_, datetime.now())
             link_xml = ET.fromstring(t)
             sitemap.append(link_xml)
+
         tree.write('/sitemap/_sitemap.xml')
         print('finished task')
 
