@@ -11,8 +11,8 @@ services:
         networks:
             - yourls_host
         volumes:
-         - ./mysql/yourls-schema.sql.gz:/docker-entrypoint-initdb.d/yourls.sql.gz
-         - data_volume:/var/lib/mysql
+         - ./mysql/schema.sql.gz:/docker-entrypoint-initdb.d/yourls.sql.gz
+        #  - data_volume:/var/lib/mysql
 
     # yourls:
     #     build:
@@ -53,5 +53,5 @@ services:
 
 networks:
     yourls_host:
-volumes:
-    data_volume:
+# volumes:
+#     data_volume:
