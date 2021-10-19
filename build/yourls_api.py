@@ -268,7 +268,7 @@ class yourls(Yourls):
             # Check buildpath
             _ = f.split('/')
             name_ = _.pop()
-            parent = '/'.join(_[1:])
+            parent = '/'.join(_[_.index('namespaces'):])
             path_ = f'/sitemap/{parent}'
             if not os.path.exists(path_):
                 os.makedirs(path_)
