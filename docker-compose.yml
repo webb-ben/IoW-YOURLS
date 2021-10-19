@@ -2,9 +2,7 @@ version: '3.6'
 
 services:
     mysql:
-        build:
-            context: ./mysql/
-            dockerfile: Dockerfile-build
+        image: mysql:5.7
         environment:
             MYSQL_ROOT_PASSWORD: ${SQL_ROOT_PASS}
         restart: always
@@ -12,8 +10,8 @@ services:
             - yourls_host
         volumes:
          - ./mysql/:/docker-entrypoint-initdb.d/
-        #  - data_volume:/var/lib/mysql
-
+    #      - data_volume:/var/lib/mysql
+    #
     # yourls:
     #     build:
     #         context: ./yourls/
@@ -30,7 +28,7 @@ services:
     #         - yourls_host
     #     ports:
     #         - ${YOURLS_PORT}:80
-
+    #
     # python:
     #     build:
     #         context: ./build/
@@ -42,7 +40,7 @@ services:
     #         YOURLS_DB_PASS: ${SQL_ROOT_PASS}
     #     networks: 
     #         - yourls_host
-    
+    #
     # adminer:
     #     image: adminer
     #     restart: always
