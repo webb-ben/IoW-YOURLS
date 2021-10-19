@@ -26,7 +26,7 @@ jobs:
           docker run --rm --network=pidsgeoconnexus_yourls_host --name build_yourls -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
       - name: Dump data
         run: |
-          docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword yourls | gzip > /docker-entrypoint-initdb.d/yourls.sql.gz"
+          docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword --database=yourls | gzip > /docker-entrypoint-initdb.d/yourls.sql.gz"
           cp -R /sitemap ./yourls/sitemap
       - name: Build and push geoconnex-mysql
         id: docker_build_mysql
