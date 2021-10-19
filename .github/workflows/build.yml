@@ -27,6 +27,7 @@ jobs:
       - name: Dump data
         run: |
           docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword yourls | gzip > /docker-entrypoint-initdb.d/yourls.sql.gz"
+          docker cp pidsgeoconnexus_mysql_1:/docker-entrypoint-initdb.d/yourls.sql.gz ./mysql/yourls.sql.gz
           cp -R /sitemap ./yourls/sitemap
       - name: Build and push geoconnex-mysql
         id: docker_build_mysql

@@ -268,14 +268,15 @@ class yourls(Yourls):
             # Check buildpath
             (parent, fname) = f.split('/')[-2:]
             path_ = f'/sitemap/{parent}'
+            fpath_ = f'{path_}/{fname}'
             if not os.path.exists(path_):
                 os.makedirs(path_)
 
             # Copy to /sitemaps
-            copyfile(f, f'{path_}/{fname}')
+            copyfile(f, fpath_)
 
             # create to link /sitemap/_sitemap.xml
-            url_ = url_join(URI_STEM, path_)
+            url_ = url_join(URI_STEM, fpath_)
             t = SITEMAP_FOREACH.format(url_, datetime.now())
             link_xml = ET.fromstring(t)
             sitemap.append(link_xml)
