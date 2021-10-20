@@ -4,8 +4,8 @@ on:
   push:
     branches: 
       - 'main'
-    paths:
-      - 'namespaces/**'
+    # paths:
+    #   - 'namespaces/**'
 
 jobs:
   main:
@@ -13,22 +13,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+
       - name: Build MySQL for Yourls
         run: |
-          docker-compose up -d --build  
+          docker compose up -d --build
+
       - name: Populate Yourls table from namespaces
         run: |
           cp -R namespaces/ ./build/namespaces/
           docker build -t build_yourls_uploader ./build/
           docker run --rm --network=pidsgeoconnexus_yourls_host --name build_yourls -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
+
       - name: Dump data
         run: |
           docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword --add-drop-database -A | gzip > /docker-entrypoint-initdb.d/yourls.sql.gz"
-          cp -R /sitemap ./sitemap
           mkdir backup
-          cp ./mysql/yourls.sql.gz ./backup/yourls.sql.gz
+          cp ./mysql/yourls.sql.gz backup/yourls.sql.gz
+          cp -R /sitemap sitemap
+          docker compose down
+
       - name: Push sitemap to geoconnex.us
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
@@ -39,6 +45,7 @@ jobs:
           destination_branch: 'dev'
           user_email: 'benjamin.miller.webb@gmail.com'
           user_name: 'webb-ben'
+
       - name: Push backup to geoconnex.us
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
