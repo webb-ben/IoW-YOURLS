@@ -1,4 +1,4 @@
-name: pid.geoconnex.us database build
+name: geoconnex.us database build
 
 on: 
   push:
