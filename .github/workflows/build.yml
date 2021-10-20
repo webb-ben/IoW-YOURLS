@@ -25,11 +25,11 @@ jobs:
         run: |
           cp -R namespaces/ ./build/namespaces/
           docker build -t build_yourls_uploader ./build/
-          docker run --rm --network=pidsgeoconnexus_yourls_host --name build_yourls -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
+          docker run --rm --network=pids_yourls_host --name build_yourls -v /sitemap:/sitemap -e "YOURLS_DB_PASS=arootpassword" build_yourls_uploader
 
       - name: Dump data
         run: |
-          docker exec pidsgeoconnexus_mysql_1 sh -c "mysqldump -u root --password=arootpassword --add-drop-database -A | gzip > /docker-entrypoint-initdb.d/yourls.sql.gz"
+          docker exec pids-mysql-1 sh -c "mysqldump -u root --password=arootpassword --add-drop-database -A | gzip > /docker-entrypoint-initdb.d/yourls.sql.gz"
           mkdir backup
           cp ./mysql/yourls.sql.gz backup/yourls.sql.gz
           cp -R /sitemap sitemap
