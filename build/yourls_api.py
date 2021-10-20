@@ -241,15 +241,18 @@ class yourls(Yourls):
         lines = file.split("\n")
         split_ = [line.split(',').pop(0) for line in lines[:-1]]
 
+        # Return on regex
+        if len(split_) <= 2:
+            return
+
         # Build sitemaps for each csv file
         tree = ET.parse('./sitemap-url.xml')
         sitemap = tree.getroot()
         for line in split_:
-            if not line.startswith('/'):
-                url_ = url_join(URI_STEM, line)
-                t = URLSET_FOREACH.format(url_, datetime.now())
-                link_xml = ET.fromstring(t)
-                sitemap.append(link_xml)
+            url_ = url_join(URI_STEM, line)
+            t = URLSET_FOREACH.format(url_, datetime.now())
+            link_xml = ET.fromstring(t)
+            sitemap.append(link_xml)
 
         # Write sitemap.xml
         tree.write(f'{filename}.xml')
@@ -273,13 +276,16 @@ class yourls(Yourls):
             if not os.path.exists(path_):
                 os.makedirs(path_)
 
-            # Copy to /sitemaps
+            # Copy xml to /sitemaps
             fpath_ = f'{path_}/{name_}'
             copyfile(f, fpath_)
 
             # create to link /sitemap/_sitemap.xml
+            _ = os.path.getmtime(fpath_)
+            time_ = datetime.datetime.fromtimestamp(_)
             url_ = url_join(URI_STEM, fpath_)
-            t = SITEMAP_FOREACH.format(url_, datetime.now())
+            t = SITEMAP_FOREACH.format(url_, time_)
+
             link_xml = ET.fromstring(t)
             sitemap.append(link_xml)
 
